@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+    <!DOCTYPE mapper   
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 不使用namespace的话sql搜索定位会比较方便-->
+<mapper namespace="com.neusoft.mapper.ItemMapper">
+
+     <!-- 实体类与数据库映射字段部分  start -->
+	<resultMap id="ResultMapItem" type="com.neusoft.po.Item">
+        <result property="id" column="id"  jdbcType="INTEGER"/>
+        <result property="name" column="name"  jdbcType="VARCHAR"/>
+        <result property="price" column="price"  jdbcType="VARCHAR"/>
+        <result property="scNum" column="scNum"  jdbcType="INTEGER"/>
+        <result property="gmNum" column="gmNum"  jdbcType="INTEGER"/>
+        <result property="url1" column="url1"  jdbcType="VARCHAR"/>
+        <result property="url2" column="url2"  jdbcType="VARCHAR"/>
+        <result property="url3" column="url3"  jdbcType="VARCHAR"/>
+        <result property="url4" column="url4"  jdbcType="VARCHAR"/>
+        <result property="url5" column="url5"  jdbcType="VARCHAR"/>
+        <result property="ms" column="ms"  jdbcType="VARCHAR"/>
+        <result property="pam1" column="pam1"  jdbcType="VARCHAR"/>
+        <result property="pam2" column="pam2"  jdbcType="VARCHAR"/>
+        <result property="pam3" column="pam3"  jdbcType="VARCHAR"/>
+        <result property="type" column="type"  jdbcType="INTEGER"/>
+         <result property="val3" column="val3"  jdbcType="VARCHAR"/>
+        <result property="val2" column="val2"  jdbcType="VARCHAR"/>
+        <result property="val1" column="val1"  jdbcType="VARCHAR"/>
+        <result property="zk" column="zk"  jdbcType="INTEGER"/>
+        <result property="categoryIdOne" column="category_id_one"  jdbcType="INTEGER"/>
+        <result property="categoryIdTwo" column="category_id_two"  jdbcType="INTEGER"/>
+        <result property="isDelete" column="isDelete"  jdbcType="INTEGER"/>
+         <association property="erji" column="category_id_two" select="com.neusoft.mapper.ItemCategoryMapper.load"/>
+          <association property="yiji" column="category_id_one" select="com.neusoft.mapper.ItemCategoryMapper.load"/>
+           <collection property="pls" column="id" 
+                ofType="com.neusoft.po.Comment" select="com.neusoft.mapper.CommentMapper.listByItemId"/>
+	</resultMap>
+	 <!-- 实体类与数据库映射字段部分  end -->
+	 
+	 <!-- 声明数据库字段 -->
+	<sql id="Item_field">
+           id,
+           name,
+           price,
+           scNum,
+           gmNum,
+           url1,
+           url2,
+           url3,
+           url4,
+           url5,
+           ms,
+           pam1,
+           pam2,
+           pam3,
+           type,
+            val3,
+           val2,
+           val1,
+           zk,
+           category_id_one,
+           category_id_two,
+           isDelete
+	</sql>
+	
+	<!-- 实体类属性  -->
+	<sql id="Item_insert">
+        	#{id} ,
+        	#{name} ,
+        	#{price} ,
+        	#{scNum} ,
+        	#{gmNum} ,
+        	#{url1} ,
+        	#{url2} ,
+        	#{url3} ,
+        	#{url4} ,
+        	#{url5} ,
+        	#{ms} ,
+        	#{pam1} ,
+        	#{pam2} ,
+        	#{pam3} ,
+        	#{type} ,
+        	#{val3} ,
+        	#{val2} ,
+        	#{val1} ,
+        	#{zk} ,
+        	#{categoryIdOne} ,
+        	#{categoryIdTwo} ,
+        	#{isDelete} 
+	</sql>
+	
+	<!-- 执行修改时 数据库字段和表字段比较 -->
+	<sql id="Item_update">
+		    <if test="name != null" >
+	            name = #{name} ,
+	        </if>
+		    <if test="price != null" >
+	            price = #{price} ,
+	        </if>
+		    <if test="scNum != null" >
+	            scNum = #{scNum} ,
+	        </if>
+		    <if test="gmNum != null" >
+	            gmNum = #{gmNum} ,
+	        </if>
+		    <if test="url1 != null" >
+	            url1 = #{url1} ,
+	        </if>
+		    <if test="url2 != null" >
+	            url2 = #{url2} ,
+	        </if>
+		    <if test="url3 != null" >
+	            url3 = #{url3} ,
+	        </if>
+		    <if test="url4 != null" >
+	            url4 = #{url4} ,
+	        </if>
+		    <if test="url5 != null" >
+	            url5 = #{url5} ,
+	        </if>
+		    <if test="ms != null" >
+	            ms = #{ms} ,
+	        </if>
+		    <if test="pam1 != null" >
+	            pam1 = #{pam1} ,
+	        </if>
+		    <if test="pam2 != null" >
+	            pam2 = #{pam2} ,
+	        </if>
+		    <if test="pam3 != null" >
+	            pam3 = #{pam3} ,
+	        </if>
+		    <if test="type != null" >
+	            type = #{type} ,
+	        </if>
+	         <if test="val3 != null" >
+	            val3 = #{val3} ,
+	        </if>
+		    <if test="val2 != null" >
+	            val2 = #{val2} ,
+	        </if>
+		    <if test="val1 != null" >
+	            val1 = #{val1} ,
+	        </if>
+		    <if test="zk != null" >
+	            zk = #{zk} ,
+	        </if>
+		    <if test="categoryIdOne != null" >
+	            category_id_one = #{categoryIdOne} ,
+	        </if>
+		    <if test="categoryIdTwo != null" >
+	            category_id_two = #{categoryIdTwo} ,
+	        </if>
+		    <if test="isDelete != null" >
+	            isDelete = #{isDelete} 
+	        </if>
+	</sql>
+	
+	<!-- 查询时条件 -->
+	<sql id="Item_where">
+	        <if test="id != null " >
+	            and id =#{id}
+	        </if>
+	        <if test="name != null " >
+	            and name =#{name}
+	        </if>
+	        <if test="price != null " >
+	            and price =#{price}
+	        </if>
+	        <if test="scNum != null " >
+	            and scNum =#{scNum}
+	        </if>
+	        <if test="gmNum != null " >
+	            and gmNum =#{gmNum}
+	        </if>
+	        <if test="url1 != null " >
+	            and url1 =#{url1}
+	        </if>
+	        <if test="url2 != null " >
+	            and url2 =#{url2}
+	        </if>
+	        <if test="url3 != null " >
+	            and url3 =#{url3}
+	        </if>
+	        <if test="url4 != null " >
+	            and url4 =#{url4}
+	        </if>
+	        <if test="url5 != null " >
+	            and url5 =#{url5}
+	        </if>
+	        <if test="ms != null " >
+	            and ms =#{ms}
+	        </if>
+	        <if test="pam1 != null " >
+	            and pam1 =#{pam1}
+	        </if>
+	        <if test="pam2 != null " >
+	            and pam2 =#{pam2}
+	        </if>
+	        <if test="pam3 != null " >
+	            and pam3 =#{pam3}
+	        </if>
+	        <if test="type != null " >
+	            and type =#{type}
+	        </if>
+	          <if test="val3 != null " >
+	            and val3 =#{val3}
+	        </if>
+	        <if test="val2 != null " >
+	            and val2 =#{val2}
+	        </if>
+	        <if test="val1 != null " >
+	            and val1 =#{val1}
+	        </if>
+	        <if test="zk != null " >
+	            and zk =#{zk}
+	        </if>
+	        <if test="categoryIdOne != null " >
+	            and category_id_one =#{categoryIdOne}
+	        </if>
+	        <if test="categoryIdTwo != null " >
+	            and category_id_two =#{categoryIdTwo}
+	        </if>
+	        <if test="isDelete != null " >
+	            and isDelete =#{isDelete}
+	        </if>
+	</sql>
+	
+   <!-- **************************************分割线************************************************************ -->	
+	
+	<!-- 以下是sql执行语句 
+	     注意：1)需要传参数的请注意你使用的方法是 xxByMap还是ByEntuty 存放的参数类型不一致。
+	      2)非自定义的方法已经是basedao注明的。方法名一定要和id相同
+	      3)自定义类的方法注意是否和共有方法重名id
+	      4)执行sql出现顺序和baseDao方法一致，便于查询请勿随意添加，自定义的sql一律放在自定义sql区域
+	 -->
+	
+	
+   <!-- ========================================新增==================================================================== -->
+	<!-- 
+	 【注意添加序列】
+	 1.方法描述：新增数据
+	 2.参数：实体类
+	 3.返回：主键
+	-->
+	<insert id="insert" parameterType="com.neusoft.po.Item" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO item (
+        <include refid="Item_field" />
+        ) VALUES (
+        <include refid="Item_insert" />       
+        )
+	</insert>
+	
+	
+	 <!-- ========================================删除==================================================================== -->
+	<!-- 
+	 1.方法描述：根据主键id删除
+	 2.参数：主键id
+	-->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+	 delete from item where id=#{id}
+	</delete>
+	
+	
+	<!-- 
+	 1.方法描述：根据实体类删除
+	 2.参数：主键id
+	-->
+	<delete id="deleteByEntity" parameterType="com.neusoft.po.Item">
+	 delete from item
+	  WHERE 1=1
+      <include refid="Item_where" />   
+	</delete>
+	
+	
+	<!-- 
+	 1.方法描述：根据map删除
+	 2.参数：主键id
+	-->
+	<delete id="deleteByMap" parameterType="java.util.HashMap">
+	 delete from item
+	  WHERE 1=1
+      <include refid="Item_where" />   
+	</delete>
+	
+	
+	 <!-- ========================================修改==================================================================== -->
+	<!-- 
+	 1.方法描述：修改数据
+	 2.参数：实体类
+	-->
+	<update id="update" parameterType="com.neusoft.po.Item">
+        UPDATE item
+        <set>
+	        <include refid="Item_update" />
+	    </set>
+        WHERE 1=1
+        	<include refid="Item_where" />        
+	</update>
+	
+	<!-- 
+	 1.方法描述：修改数据通过id
+	 2.参数：实体类
+	 -->
+	<update id="updateById" parameterType="com.neusoft.po.Item">
+        UPDATE item
+        <set>
+	        <include refid="Item_update" />
+	    </set>
+        WHERE 1=1
+        	and id=#{id}      
+	</update>
+	
+	
+	
+	 <!-- ========================================查询列表【不分页】==================================================================== -->
+	
+	<!-- 
+	 1.方法描述：用于listByMap根据map查询
+	 2.参数：map
+	-->
+	<select id="listByMap" resultMap="ResultMapItem" parameterType="map">
+		select <include refid="Item_field" />
+ 		from item where 1=1
+ 		<include refid="Item_where" /> 
+	</select>
+	
+	<!-- 
+	 1.方法描述：用于select查询所有
+	 2.参数：无参数
+	-->
+	<select id="listAll" resultMap="ResultMapItem">
+		select <include refid="Item_field" />
+ 		from item 
+	</select>
+	
+	
+	<!-- 
+	 1.方法描述：查询所有实体,根据实体属性值为判断条件查询所有实体，
+	 2.参数：Entity
+	-->
+	<select id="listAllByEntity" resultMap="ResultMapItem" parameterType="com.neusoft.po.Item">
+		select <include refid="Item_field" />
+ 		from item where 1=1
+ 		<include refid="Item_where" /> 
+	</select>
+	
+	
+	
+	 <!-- ========================================查询单个对象==================================================================== -->
+	<!-- 
+	 1.方法描述：select查询单个
+	 2.参数：id
+	-->
+	<select id="load" resultMap="ResultMapItem" parameterType="java.lang.Integer">
+		select 	<include refid="Item_field" />
+ 		from item 
+ 		where id=#{id}
+	</select>
+	
+	
+	
+	<!-- 
+	 1.方法描述：select查询单个
+	 2.参数：id
+	-->
+	<select id="getById" resultMap="ResultMapItem" parameterType="java.lang.Integer">
+		select 	<include refid="Item_field" />
+ 		from item 
+ 		where id=#{id}
+	</select>
+	
+	<!-- 
+	 1.方法描述：用于getByMap根据map查询
+	 2.参数：map
+	-->
+	<select id="getByMap" resultMap="ResultMapItem" parameterType="map">
+		select <include refid="Item_field" />
+ 		from item where 1=1
+ 		<include refid="Item_where" /> 
+	</select>
+	
+	<!-- 
+	 1.方法描述：用于Entity根据Entity查询
+	 2.参数：Entity
+	 -->
+	<select id="getByEntity" resultMap="ResultMapItem" parameterType="com.neusoft.po.Item">
+		select <include refid="Item_field" />
+ 		from item where 1=1
+ 		<include refid="Item_where" /> 
+	</select>
+	
+	
+	 <!-- ========================================查询列表【分页】==================================================================== -->
+     <!-- 
+	 1.方法描述：分页
+	 2.参数：map
+	 -->
+	<select id="findByMap" resultMap="ResultMapItem" parameterType="map">
+		select <include refid="Item_field" />
+ 		from item where 1=1
+ 		<include refid="Item_where" /> 
+	</select>
+	
+     <!-- 
+	 1.方法描述：分页
+	 2.参数：Entity
+	 -->
+	<select id="findByEntity" resultMap="ResultMapItem" parameterType="com.neusoft.po.Item">
+		select <include refid="Item_field" />
+ 		from item where 1=1
+ 		<include refid="Item_where" /> 
+	</select>
+	
+	
+	 <!-- ========================================批量新增修改==================================================================== -->
+	<!-- 
+	 1.方法描述：批量插入
+	 2.参数：集合/数组
+	-->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO item (
+        <include refid="Item_field" />
+        ) VALUES 
+        <foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			
+	            #{item.name} ,
+	            #{item.price} ,
+	            #{item.scNum} ,
+	            #{item.gmNum} ,
+	            #{item.url1} ,
+	            #{item.url2} ,
+	            #{item.url3} ,
+	            #{item.url4} ,
+	            #{item.url5} ,
+	            #{item.ms} ,
+	            #{item.pam1} ,
+	            #{item.pam2} ,
+	            #{item.pam3} ,
+	            #{item.type} ,
+	             #{item.val3} ,
+	            #{item.val2} ,
+	            #{item.val1} ,
+	            #{item.zk} ,
+	            #{item.categoryIdOne} ,
+	            #{item.categoryIdTwo} ,
+	            #{item.isDelete} 
+			
+			)
+		</foreach>       
+        
+	</insert>
+    
+    <!-- 
+	 1.方法描述：批量修改
+	 2.参数：集合/数组
+	-->
+	<update id="updateBatch" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index"
+			separator=";">
+        UPDATE 
+        item 
+        <set>
+		    <if test="item.name != null" >
+	        name = #{item.name},
+	        </if>
+		    <if test="item.price != null" >
+	        price = #{item.price},
+	        </if>
+		    <if test="item.scNum != null" >
+	        scNum = #{item.scNum},
+	        </if>
+		    <if test="item.gmNum != null" >
+	        gmNum = #{item.gmNum},
+	        </if>
+		    <if test="item.url1 != null" >
+	        url1 = #{item.url1},
+	        </if>
+		    <if test="item.url2 != null" >
+	        url2 = #{item.url2},
+	        </if>
+		    <if test="item.url3 != null" >
+	        url3 = #{item.url3},
+	        </if>
+		    <if test="item.url4 != null" >
+	        url4 = #{item.url4},
+	        </if>
+		    <if test="item.url5 != null" >
+	        url5 = #{item.url5},
+	        </if>
+		    <if test="item.ms != null" >
+	        ms = #{item.ms},
+	        </if>
+		    <if test="item.pam1 != null" >
+	        pam1 = #{item.pam1},
+	        </if>
+		    <if test="item.pam2 != null" >
+	        pam2 = #{item.pam2},
+	        </if>
+		    <if test="item.pam3 != null" >
+	        pam3 = #{item.pam3},
+	        </if>
+		    <if test="item.type != null" >
+	        type = #{item.type},
+	        </if>
+	           <if test="item.val3 != null" >
+	        val3 = #{item.val3},
+	        </if>
+		    <if test="item.val2 != null" >
+	        val2 = #{item.val2},
+	        </if>
+		    <if test="item.val1 != null" >
+	        val1 = #{item.val1},
+	        </if>
+		    <if test="item.zk != null" >
+	        zk = #{item.zk},
+	        </if>
+		    <if test="item.categoryIdOne != null" >
+	        category_id_one = #{item.categoryIdOne},
+	        </if>
+		    <if test="item.categoryIdTwo != null" >
+	        category_id_two = #{item.categoryIdTwo},
+	        </if>
+		    <if test="item.isDelete != null" >
+	        isDelete = #{item.isDelete}
+	        </if>
+	    </set>
+        WHERE 
+        	1=1 
+        </foreach>    
+	</update>
+
+   <!-- ******************************自定义 sql************************************************************** -->
+   
+   <!-- 
+           通过sql查询单个对象 返回对象
+    -->
+   <select id="getBySqlReturnEntity" resultMap="ResultMapItem">
+		${sql}
+   </select>
+   
+    <!-- 
+           通过sql查询单个对象 返回map
+    -->
+   <select id="getBySqlReturnMap" resultType="map">
+		${sql}
+   </select>
+   
+  <!--  List<Item> listtj(@Param("list")List<Integer> types); -->
+   <select id="listtj" resultMap="ResultMapItem">
+		select * from item where isDelete = 0 and category_id_two in
+		<foreach item="in" index="index" collection="list" open="(" separator="," close=")">  
+		  #{in}  
+		 </foreach>  
+		 limit 0,12
+   </select>
+   
+   <!-- 
+           通过sql查询集合 返回对象
+    -->
+   <select id="listBySqlReturnEntity" resultMap="ResultMapItem">
+		${sql}
+   </select>
+   
+    <!-- 
+           通过sql查询查询集合 返回map
+    -->
+   <select id="listBySqlReturnMap" resultType="map">
+		${sql}
+   </select>
+   
+   <!-- 
+           通过sql查询分页集合 返回对象
+    -->
+   <select id="findBySqlRerturnEntity" resultMap="ResultMapItem">
+		${sql}
+   </select>
+   
+   <!-- 通过sql修改 -->
+   <update id="updateBysql">
+       ${sql}  
+   </update>
+   
+   <delete id="deleteBySql">
+	${sql}  
+	</delete>
+	
+</mapper>
+

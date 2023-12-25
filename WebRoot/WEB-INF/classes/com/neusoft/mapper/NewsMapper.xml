@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+    <!DOCTYPE mapper   
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 不使用namespace的话sql搜索定位会比较方便-->
+<mapper namespace="com.neusoft.mapper.NewsMapper">
+
+     <!-- 实体类与数据库映射字段部分  start -->
+	<resultMap id="ResultMapNews" type="com.neusoft.po.News">
+        <result property="id" column="id"  jdbcType="INTEGER"/>
+        <result property="name" column="name"  jdbcType="VARCHAR"/>
+        <result property="content" column="content"  jdbcType="VARCHAR"/>
+        <result property="addTime" column="addTime"  jdbcType="TIMESTAMP"/>
+	</resultMap>
+	 <!-- 实体类与数据库映射字段部分  end -->
+	 
+	 <!-- 声明数据库字段 -->
+	<sql id="News_field">
+           id,
+           name,
+           content,
+           addTime
+	</sql>
+	
+	<!-- 实体类属性  -->
+	<sql id="News_insert">
+        	#{id} ,
+        	#{name} ,
+        	#{content} ,
+        	#{addTime} 
+	</sql>
+	
+	<!-- 执行修改时 数据库字段和表字段比较 -->
+	<sql id="News_update">
+		    <if test="name != null" >
+	            name = #{name} ,
+	        </if>
+		    <if test="content != null" >
+	            content = #{content} ,
+	        </if>
+		    <if test="addTime != null" >
+	            addTime = #{addTime} 
+	        </if>
+	</sql>
+	
+	<!-- 查询时条件 -->
+	<sql id="News_where">
+	        <if test="id != null " >
+	            and id =#{id}
+	        </if>
+	        <if test="name != null " >
+	            and name =#{name}
+	        </if>
+	        <if test="content != null " >
+	            and content =#{content}
+	        </if>
+	        <if test="addTime != null " >
+	            and addTime =#{addTime}
+	        </if>
+	</sql>
+	
+   <!-- **************************************分割线************************************************************ -->	
+	
+	<!-- 以下是sql执行语句 
+	     注意：1)需要传参数的请注意你使用的方法是 xxByMap还是ByEntuty 存放的参数类型不一致。
+	      2)非自定义的方法已经是basedao注明的。方法名一定要和id相同
+	      3)自定义类的方法注意是否和共有方法重名id
+	      4)执行sql出现顺序和baseDao方法一致，便于查询请勿随意添加，自定义的sql一律放在自定义sql区域
+	 -->
+	
+	
+   <!-- ========================================新增==================================================================== -->
+	<!-- 
+	 【注意添加序列】
+	 1.方法描述：新增数据
+	 2.参数：实体类
+	 3.返回：主键
+	-->
+	<insert id="insert" parameterType="com.neusoft.po.News" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO news (
+        <include refid="News_field" />
+        ) VALUES (
+        <include refid="News_insert" />       
+        )
+	</insert>
+	
+	
+	 <!-- ========================================删除==================================================================== -->
+	<!-- 
+	 1.方法描述：根据主键id删除
+	 2.参数：主键id
+	-->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+	 delete from news where id=#{id}
+	</delete>
+	
+	
+	<!-- 
+	 1.方法描述：根据实体类删除
+	 2.参数：主键id
+	-->
+	<delete id="deleteByEntity" parameterType="com.neusoft.po.News">
+	 delete from news
+	  WHERE 1=1
+      <include refid="News_where" />   
+	</delete>
+	
+	
+	<!-- 
+	 1.方法描述：根据map删除
+	 2.参数：主键id
+	-->
+	<delete id="deleteByMap" parameterType="java.util.HashMap">
+	 delete from news
+	  WHERE 1=1
+      <include refid="News_where" />   
+	</delete>
+	
+	
+	 <!-- ========================================修改==================================================================== -->
+	<!-- 
+	 1.方法描述：修改数据
+	 2.参数：实体类
+	-->
+	<update id="update" parameterType="com.neusoft.po.News">
+        UPDATE news
+        <set>
+	        <include refid="News_update" />
+	    </set>
+        WHERE 1=1
+        	<include refid="News_where" />        
+	</update>
+	
+	<!-- 
+	 1.方法描述：修改数据通过id
+	 2.参数：实体类
+	 -->
+	<update id="updateById" parameterType="com.neusoft.po.News">
+        UPDATE news
+        <set>
+	        <include refid="News_update" />
+	    </set>
+        WHERE 1=1
+        	and id=#{id}      
+	</update>
+	
+	
+	
+	 <!-- ========================================查询列表【不分页】==================================================================== -->
+	
+	<!-- 
+	 1.方法描述：用于listByMap根据map查询
+	 2.参数：map
+	-->
+	<select id="listByMap" resultMap="ResultMapNews" parameterType="map">
+		select <include refid="News_field" />
+ 		from news where 1=1
+ 		<include refid="News_where" /> 
+	</select>
+	
+	<!-- 
+	 1.方法描述：用于select查询所有
+	 2.参数：无参数
+	-->
+	<select id="listAll" resultMap="ResultMapNews">
+		select <include refid="News_field" />
+ 		from news 
+	</select>
+	
+	
+	<!-- 
+	 1.方法描述：查询所有实体,根据实体属性值为判断条件查询所有实体，
+	 2.参数：Entity
+	-->
+	<select id="listAllByEntity" resultMap="ResultMapNews" parameterType="com.neusoft.po.News">
+		select <include refid="News_field" />
+ 		from news where 1=1
+ 		<include refid="News_where" /> 
+	</select>
+	
+	
+	
+	 <!-- ========================================查询单个对象==================================================================== -->
+	<!-- 
+	 1.方法描述：select查询单个
+	 2.参数：id
+	-->
+	<select id="load" resultMap="ResultMapNews" parameterType="java.lang.Integer">
+		select 	<include refid="News_field" />
+ 		from news 
+ 		where id=#{id}
+	</select>
+	
+	
+	
+	<!-- 
+	 1.方法描述：select查询单个
+	 2.参数：id
+	-->
+	<select id="getById" resultMap="ResultMapNews" parameterType="java.lang.Integer">
+		select 	<include refid="News_field" />
+ 		from news 
+ 		where id=#{id}
+	</select>
+	
+	<!-- 
+	 1.方法描述：用于getByMap根据map查询
+	 2.参数：map
+	-->
+	<select id="getByMap" resultMap="ResultMapNews" parameterType="map">
+		select <include refid="News_field" />
+ 		from news where 1=1
+ 		<include refid="News_where" /> 
+	</select>
+	
+	<!-- 
+	 1.方法描述：用于Entity根据Entity查询
+	 2.参数：Entity
+	 -->
+	<select id="getByEntity" resultMap="ResultMapNews" parameterType="com.neusoft.po.News">
+		select <include refid="News_field" />
+ 		from news where 1=1
+ 		<include refid="News_where" /> 
+	</select>
+	
+	
+	 <!-- ========================================查询列表【分页】==================================================================== -->
+     <!-- 
+	 1.方法描述：分页
+	 2.参数：map
+	 -->
+	<select id="findByMap" resultMap="ResultMapNews" parameterType="map">
+		select <include refid="News_field" />
+ 		from news where 1=1
+ 		<include refid="News_where" /> 
+	</select>
+	
+     <!-- 
+	 1.方法描述：分页
+	 2.参数：Entity
+	 -->
+	<select id="findByEntity" resultMap="ResultMapNews" parameterType="com.neusoft.po.News">
+		select <include refid="News_field" />
+ 		from news where 1=1
+ 		<include refid="News_where" /> order by id desc
+	</select>
+	
+	
+	 <!-- ========================================批量新增修改==================================================================== -->
+	<!-- 
+	 1.方法描述：批量插入
+	 2.参数：集合/数组
+	-->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO news (
+        <include refid="News_field" />
+        ) VALUES 
+        <foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			
+	            #{item.name} ,
+	            #{item.content} ,
+	            #{item.addTime} 
+			
+			)
+		</foreach>       
+        
+	</insert>
+    
+    <!-- 
+	 1.方法描述：批量修改
+	 2.参数：集合/数组
+	-->
+	<update id="updateBatch" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index"
+			separator=";">
+        UPDATE 
+        news 
+        <set>
+		    <if test="item.name != null" >
+	        name = #{item.name},
+	        </if>
+		    <if test="item.content != null" >
+	        content = #{item.content},
+	        </if>
+		    <if test="item.addTime != null" >
+	        addTime = #{item.addTime}
+	        </if>
+	    </set>
+        WHERE 
+        	1=1 
+        </foreach>    
+	</update>
+
+</mapper>
+
